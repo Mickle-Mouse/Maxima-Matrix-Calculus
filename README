@@ -1,0 +1,30 @@
+Before we really get this project started we need to discuss several questions first:
+
+First, how should we try to solve this problem of matrix calculus?  We should consider all trade-offs when approaching how we should go about building this package:
+* compactness, 
+* correctness, 
+* completeness,
+* ease for us to develop,
+* computational efficiency, and
+* flexibility/extendability
+We should be mindful of future extensions. Which solutions below would most easily be extended to higher dimensions (tensors) and other number systems (real --> complex --> quaterions --> octonions). 
+
+I thought of some initial approaches, which we ought to consider (and approaches I've not even mentioned):
+1) The Matrix Cookbook (orion.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf) has several identities and rules we could enter directly.
+
+2) Most matrix operations can be rewritten in terms of a sum of scalar variables (by iterating over single entries in matrices at a time). We could find and implement the rules needed to go back and forth between sum-representation form and a full matrix form (which I suspect do not always exist). Also Maxima is lacking in terms of its rules for simplifying some sum expressions (diff( sum( x[i] * W[i,j], i, 1, N ), x[l] ) ) (the answer is W[l, j] if 1<l<N, otherwise 0). I think eventually we will have to do at least some work here, one way or another.
+
+3) Depending on Maxima's capabilities we may be able to get away with simply inserting basic rules and identities. Maxima may have to iteratively re-evaluate the expression multiple times, but most advanced identities can be redrived from few rules and identities. I am also aware that Maxima is not a theorem prover so we may need to implement a large number of complicated rules.
+
+--- Discussion for Approach (1)
+As for approach (1), I've already looked over some of the identities given in The Matrix Cookbook and using the Matrix chain rule I've proven many identities. This means that if Maxima's CAS engine is good enough and we provide the basic rules and identities, then the advanced rules don't have to be explicitly entered. If we choose to do (1), I suggest we start with basics and the chain rule to see if Maxima is capable of producing some of the more advanced rules.
+
+Furthermore, even if we did not need to enter all the advanced identities, would it be worth it in terms of speed, memory, and package size. An advanced rule that depends on three other identities and the chain rule may be faster if it were explicitly entered. However, this would depend on how Maxima performs its pattern matching.
+
+--- Discussion for Approach (2)
+
+--- Discussion for Approach (3)
+Where is a good source for the basics of matrix calculus? I know many of these rules are easy enough to rederive. For example, equation (476) in The Matrix Cookbook is a direct analog to the scalar exponentiation. 
+
+--- About me (Michael Valenzuela)
+I am just a Ph.D. student currently researching machine learning. I've done a bit of work with the No-Free-Lunch theorems for search and optimization. They do not directly need this package. I found this package useful when I began looking into how different learning algorithms embed assumptions. Thus I find this useful for CMA-ES (http://en.wikipedia.org/wiki/CMA-ES) and for algorithms using natural gradients.
