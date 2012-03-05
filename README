@@ -35,11 +35,21 @@ After playing with the itensor tool, I figured out the primary set of rules I co
 
 --- Discussion for Approach (5)
 From (4), it appears we can do all basic calculus using just a few identities, the chain rule, the product rules, replacing dX/dX_ij with J_ij, and replacing dx_vector / dx_vector with some single entry vector. Many examples fall out of this quite easily.
-d(X^T . B . X)/dX : using the product rule --->
-J^ji . B . X + X^T . B . J^ij = X^T . B . J^ij + J^ji . B . X (the definition given, 72 in the matrix cookbook)
-I'm still trying to figure out if there is a an easy way to capture arbitrary indices (  (X^n)_kl ). It is obvious from itensor that k corresponds to the row first selected for the left most matrix and that l corresponds to the column of the right most matrix.
 
-This plus the definition for negative matrices, traces, determinants, etc. should be able to give us everything we need. The primary problem is that the results can often be simplified further after using this method (formula 73 needs some further simplification rules).
+For the general case : dX/dX_ij = J^ij (the single entry matrix)
+For structured cases : dX/dX_ij = S^ij (a structured matrix. For example a symmetric matrix, S_symmetric^ij = (J^ij + J^ji) * (1 - delta(i,j) ) + J^ii * (delta(i,j)
+
+d(X^T . B . X)/dX_ij : using the product rule --->
+J^ji . B . X + X^T . B . J^ij = X^T . B . J^ij + J^ji . B . X (the definition given, 72 in the matrix cookbook)
+
+d(x_vec^t . B . x_vec)/dx_vec        : using the product rule --->
+e^T_i . B . x + x^T . B . e_i        : While this is correct, this is not a canonical form. If we note that the single entry vector e_i selects a row/column, depending on whether it is left/right multiplied, we can 'simplify' --->
+ith row(B) . x + x^T . ith column(B) : Recalling that the index i is a row index for a column vector -->
+(ith row(B) . x) --> B . x
+(x^T . ith col(B) ) --> B^T . x      : If these simplification rule were formalized. Then most vector identities fall out.
+d(x_vec^t . B . x_vec)/dx_vec = (B + B^T) . x
+
+The above plus the definitions for derivatives of negative matrices, traces, determinants, etc. should be able to give us everything we need. The primary problem is that the results can often be simplified further after using this method (formula 73 needs some further simplification rules).
 
 
 --- About me (Michael Valenzuela)
